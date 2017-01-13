@@ -1,53 +1,53 @@
 #frontend
 
 import formatter
-from optparse import OptionParser
+import argparse
 
-parser = OptionParser()
-parser.add_option("-i", "--image", dest="image",
+parser = argparse.ArgumentParser(description='Formatt text to image')
+parser.add_argument("-i", "--image", dest="image",
                   help="specifiy input image", metavar="IMAGE")
-parser.add_option("-t", "--text", dest="text", 
+parser.add_argument("-t", "--text", dest="text", 
                   help="specify text file", metavar="TEXTFILE")
-parser.add_option("-r", "--resolution", dest="resolution",
-                  type="int", nargs=2, default=(5, 10),
-                  help="specify resolution of characters, x and y", metavar="X Y")
-parser.add_option("--html",
+parser.add_argument("-r", "--resolution", dest="resolution",
+                  type=int, nargs=2, default=(5, 10),
+                  help="specify resolution of characters, x and y", metavar="X")
+parser.add_argument("--html",
                   action="store_true", dest="html", default=False,
                   help="output is html with color codes")
-parser.add_option("-f", "--file", dest="output",
+parser.add_argument("-f", "--file", dest="output",
                   help="specify output file", metavar="OUTPUTFILE")
-parser.add_option("-s", "--nospaces", dest="spacesKept", action="store_false",
+parser.add_argument("-s", "--nospaces", dest="spacesKept", action="store_false",
                   default=True,
                   help="Don't include spaces in output",)
 
 
-(options, args) = parser.parse_args()
+args = parser.parse_args()
 
 # text and image options are mandatory, so we check for them:
-if options.image == None:
+if args.image == None:
     print("Must specify image file with -i option")
     exit()
-if options.text == None:
+if args.text == None:
     print("Must specify text file with -t option")
     exit()
 
 # send the image file and character resolution to the formatter,
 # get a matrix of RGBA values
-matrix = formatter.getMatrix(options.resolution, options.image)
+matrix = formatter.getMatrix(args.resolution, args.image)
 
 
-f = open(options.text, 'r')
+f = open(args.text, 'r')
 fullText = f.readlines()
 fullText = "".join(fullText)
 
 #out put to colored HTML or plain text? 
-if options.html:
-    formattedText = formatter.formatHTML(matrix, fullText, options.spacesKept)
+if args.html:
+    formattedText = formatter.formatHTML(matrix, fullText, args.spacesKept)
 else: 
-    formattedText = formatter.formatRawText(matrix, fullText, options.spacesKept)
+    formattedText = formatter.formatRawText(matrix, fullText, args.spacesKept)
 
-if options.output:
-    outfile = open(options.output, 'w')
+if args.output:
+    outfile = open(args.output, 'w')
     outfile.write(formattedText)
     outfile.close()
 else:
