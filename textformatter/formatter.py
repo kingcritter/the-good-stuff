@@ -76,7 +76,7 @@ def formatRawText(matrix, text, spacesKept=True):
 
     return formattedString
 
-def formatHTML(matrix, text):
+def formatHTML(matrix, text, spacesKept=True):
     formattedString = ""
     textLength = len(text)
     textIndex = 0
@@ -89,7 +89,10 @@ def formatHTML(matrix, text):
                 formattedString += "&nbsp"
             else:
                 try:
-                    if text[textIndex] == "\n" or text[textIndex] == " " and spacesKept:
+                    if spacesKept == False:
+                        while text[textIndex] == "\n" or text[textIndex] == " " and textIndex < textLength:
+                            textIndex += 1
+                    if text[textIndex] == "\n" or text[textIndex] == " ":
                         formattedString += "&nbsp"
                     else:
                         temp = ""
