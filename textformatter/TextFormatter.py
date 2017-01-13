@@ -10,7 +10,7 @@ parser.add_argument("-t", "--text", dest="text",
                   help="specify text file", metavar="TEXTFILE")
 parser.add_argument("-r", "--resolution", dest="resolution",
                   type=int, nargs=2, default=(5, 10),
-                  help="specify resolution of characters, x and y", metavar="X")
+                  help="specify resolution of characters, x and y", metavar=("X", "Y"))
 parser.add_argument("--html",
                   action="store_true", dest="html", default=False,
                   help="output is html with color codes")
