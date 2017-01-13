@@ -16,6 +16,9 @@ parser.add_option("--html",
                   help="output is html with color codes")
 parser.add_option("-f", "--file", dest="output",
                   help="specify output file", metavar="OUTPUTFILE")
+parser.add_option("-s", "--nospaces", dest="spacesKept", action="store_false",
+                  default=True,
+                  help="Don't include spaces in output",)
 
 
 (options, args) = parser.parse_args()
@@ -39,9 +42,9 @@ fullText = "".join(fullText)
 
 #out put to colored HTML or plain text? 
 if options.html:
-    formattedText = formatter.formatHTML(matrix, fullText)
+    formattedText = formatter.formatHTML(matrix, fullText, options.spacesKept)
 else: 
-    formattedText = formatter.formatRawText(matrix, fullText)
+    formattedText = formatter.formatRawText(matrix, fullText, options.spacesKept)
 
 if options.output:
     outfile = open(options.output, 'w')

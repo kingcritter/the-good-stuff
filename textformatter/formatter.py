@@ -48,22 +48,27 @@ def getAverageRGBA(caret, charSize, im):
 
     return tuple(average)
 
-def formatRawText(matrix, text):
+def formatRawText(matrix, text, spacesKept=True):
     formattedString = ""
     textLength = len(text)
     textIndex = 0
 
     for row in matrix:
         for pixel in row: 
-            if pixel[3] < 127:
+            if pixel[3] < 127: #less than half transparent
                 formattedString += " "
             else:
                 try:
-                    if text[textIndex] == "\n":
+                    if spacesKept == False:
+                        while text[textIndex] == "\n" or text[textIndex] == " " and textIndex < textLength:
+                            textIndex += 1
+                    if text[textIndex] == "\n" or text[textIndex] == " ":
                         formattedString += " "
-                    else:
+                    elif text[textIndex] != " " and text[textIndex] != "\n":
                         formattedString += text[textIndex]
+                    # now, if spacesKept=False and it was a space or newline, we'll have skipped it
                     textIndex += 1
+                # If we run out of text, fill in with asterisks
                 except IndexError:
                     formattedString += "*"
         # at the end of the row
@@ -84,7 +89,7 @@ def formatHTML(matrix, text):
                 formattedString += "&nbsp"
             else:
                 try:
-                    if text[textIndex] == "\n":
+                    if text[textIndex] == "\n" or text[textIndex] == " " and spacesKept:
                         formattedString += "&nbsp"
                     else:
                         temp = ""
